@@ -14,7 +14,38 @@ TripMate AI is an advanced, interactive multi-agent travel planning system built
 - **Model Context Protocol (MCP)**: Dynamic tool integrations for real-time web search (Tavily), flight data (AviationStack), and weather info (OpenWeather).
 - **State Persistence**: Full state check-pointing backed by **PostgreSQL** (`PostgresSaver`).
 - **Human-in-the-Loop (HITL)**: Interactive approval workflow before finalizing travel itineraries.
-- **FastAPI Web UI**: Clean web interface for chatting with the multi-agent system.
+---
+
+## 🏗️ Multi-Agent Architecture & Workflow Diagram
+
+```mermaid
+flowchart TD
+    User["👤 User Request"] --> WebUI["🌐 FastAPI Web UI (app.py)"]
+    WebUI --> Supervisor["🧠 Supervisor Agent & Input Guardrail"]
+    
+    Supervisor -->|Invalid / Off-topic| GuardrailBlock["⛔ Blocked Response"]
+    Supervisor -->|Valid Travel Request| SpecialistRouter["🔀 Specialist Agent Router"]
+    
+    subgraph MCP_Tools ["🛠️ Specialist Agents & Model Context Protocol (MCP) Tools"]
+        SpecialistRouter --> FlightAgent["✈️ Flight Agent (AviationStack MCP)"]
+        SpecialistRouter --> HotelAgent["🏨 Hotel Agent (Tavily Search MCP)"]
+        SpecialistRouter --> WeatherAgent["☀️ Weather Agent (OpenWeather MCP)"]
+        SpecialistRouter --> BudgetAgent["💰 Budget Analyst Agent"]
+    end
+    
+    FlightAgent --> ItineraryAgent["📋 Itinerary Synthesis Agent"]
+    HotelAgent --> ItineraryAgent
+    WeatherAgent --> ItineraryAgent
+    BudgetAgent --> ItineraryAgent
+    
+    ItineraryAgent --> HITL["👤 Human-in-the-Loop Review (interrupt)"]
+    
+    HITL -->|User Request Revision| ItineraryAgent
+    HITL -->|User Approved Draft| FinalAgent["✨ Final Polished Plan Generator"]
+    
+    FinalAgent --> PostgresDB[("💾 PostgreSQL Checkpointer (PostgresSaver State Persistence)")]
+    PostgresDB --> UserResponse["🎉 Final Formatted Travel Plan"]
+```
 
 ---
 
