@@ -1,5 +1,9 @@
 # TripMate AI - Multi-Agent Travel Planner
 
+[![Live Web App](https://img.shields.io/badge/Live_App-tripmate--ai.onrender.com-46E3B7?style=for-the-badge&logo=render)](https://tripmate-ai-multi-agent-travel-planner-1hha.onrender.com/)
+
+👉 **Live Demo Web App**: [https://tripmate-ai-multi-agent-travel-planner-1hha.onrender.com/](https://tripmate-ai-multi-agent-travel-planner-1hha.onrender.com/)
+
 TripMate AI is an advanced, interactive multi-agent travel planning system built with **LangGraph**, **LangChain**, **FastAPI**, and **Model Context Protocol (MCP)** tools.
 
 ---
